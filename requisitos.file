@@ -1,0 +1,20 @@
+                                                TaskFlow - Documentação de Requisitos (Versão Simplificada)
+
+-Requisitos Funcionais-
+
+    RF01: Criar uma nova tarefa.
+    RF02: Listar todas as tarefas.
+    RF03: Marcar/desmarcar tarefa como concluída.
+    RF04: Editar o título de uma tarefa.
+    RF05: Excluir uma tarefa.
+    RF06: Persistir os dados em banco de dados PostgreSQL.
+    RF07: Disponibilizar API RESTful (GET, POST, PUT, DELETE).
+    RF08: Interface web responsiva.
+
+-Requisitos Não Funcionais-
+
+    RNF01: Backend em Java 21+ com Spring Boot, frontend em Next.js com Tailwind e shadcn/ui.
+    RNF02: Banco de dados PostgreSQL.
+    RNF03: Containerização com Docker e Docker Compose.
+    RNF04: CI/CD com GitHub Actions (build e testes automatizados).
+    RNF05: Código modular e testado (testes unitários no backend e frontend).
