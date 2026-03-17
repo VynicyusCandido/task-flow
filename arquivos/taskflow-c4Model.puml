@@ -1,0 +1,28 @@
+@startuml
+!include <C4/C4_Component>
+
+title C4 Model (Contexto, Container e Componente) - TaskFlow
+
+Person(usuario, "Usuário", "Gerencia tarefas no dia a dia")
+
+System_Boundary(taskflow, "TaskFlow") {
+    
+    Container(frontend, "Frontend", "Next.js", "Interface web responsiva")
+    
+    Container_Boundary(backend, "Backend (Spring Boot)") {
+        Component(controller, "Task Controller", "REST", "Recebe requisições HTTP")
+        Component(service, "Task Service", "Service", "Lógica e regras de negócio")
+        Component(repository, "Task Repository", "JPA", "Persistência de dados")
+    }
+
+    ContainerDb(db, "Banco de Dados", "PostgreSQL", "Armazena as tarefas")
+}
+
+' Relações de fluxo
+Rel(usuario, frontend, "Acessa", "HTTPS")
+Rel(frontend, controller, "Chama API", "JSON/REST")
+Rel(controller, service, "Delega para")
+Rel(service, repository, "Usa para salvar/buscar")
+Rel(repository, db, "Lê/Escreve", "JDBC")
+
+@enduml
