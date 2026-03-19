@@ -7,11 +7,12 @@ Person(usuario, "Usuário", "Gerencia tarefas no dia a dia")
 
 System_Boundary(taskflow, "TaskFlow") {
     
-    Container(frontend, "Frontend", "Next.js", "Interface web responsiva")
+    Container(frontend, "Frontend", "Next.js", "React", "Interface web responsiva")
     
     Container_Boundary(backend, "Backend (Spring Boot)") {
         Component(controller, "Task Controller", "REST", "Recebe requisições HTTP")
         Component(service, "Task Service", "Service", "Lógica e regras de negócio")
+        Component(Interface, "Task Mapper", "Controle de DTO para Entidade e vice-versa com MapperStruct")
         Component(repository, "Task Repository", "JPA", "Persistência de dados")
     }
 
@@ -22,7 +23,8 @@ System_Boundary(taskflow, "TaskFlow") {
 Rel(usuario, frontend, "Acessa", "HTTPS")
 Rel(frontend, controller, "Chama API", "JSON/REST")
 Rel(controller, service, "Delega para")
-Rel(service, repository, "Usa para salvar/buscar")
+Rel(service, Interface, "Camada de tradução")
+Rel(Interface, repository, "Leva Entidade sem o frontend saber oque é")
 Rel(repository, db, "Lê/Escreve", "JDBC")
 
 @enduml
