@@ -11,10 +11,8 @@ public interface TaskMapper {
 
     TaskMapper INSTANCE = Mappers.getMapper(TaskMapper.class);
 
-    // Entity -> DTO (todos os campos)
     TaskDTO toDTO(Task task);
 
-    // DTO -> Entity (ignorar id pois será gerado pelo banco)
     @Mapping(target = "id", ignore = true)
     Task toEntity(TaskDTO taskDTO);
 }

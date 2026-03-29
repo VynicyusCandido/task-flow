@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-@CrossOrigin(origins = "*") // Para desenvolvimento; em produção restrinja
+@CrossOrigin(origins = "*") // pesquisar sobre crossOrigin(origins = '*') se é um cross que pega todos endPoints, e como adicionar o cross
 @RequiredArgsConstructor
 public class TaskController {
 
@@ -35,8 +35,8 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @Valid @RequestBody TaskDTO taskDTO) {
-        return ResponseEntity.ok(taskService.update(id, taskDTO));
+    public ResponseEntity<TaskDTO> saveTask(@PathVariable Long id, @Valid @RequestBody TaskDTO taskDTO) {
+        return ResponseEntity.ok(taskService.save(id, taskDTO));
     }
 
     @DeleteMapping("/{id}")

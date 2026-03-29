@@ -40,7 +40,7 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskDTO update(Long id, TaskDTO taskDTO) {
+    public TaskDTO save(Long id, TaskDTO taskDTO) {
         Task existingTask = taskRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
         existingTask.setTitle(taskDTO.title());
