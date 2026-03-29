@@ -18,6 +18,33 @@ No dia a dia, precisamos de uma ferramenta rápida e intuitiva para organizar no
 ### C4 Model
 
   * [Imagem C4 Model](https://ibb.co/r2tkrr8H)
+  
+
+## 📁 Estrutura do projeto
+
+```text
+taskflow/
+├── file
+│   ├── c4Model/
+│   ├── requisitos/
+├── taskflow-api/               # Projeto Spring Boot (Java 21)
+│   ├── src/
+│   ├── pom.xml
+│   ├── Dockerfile
+│   └── ...
+├── taskflow-app/              # Projeto Next.js
+│   ├── app/
+│   ├── components/
+│   ├── lib/
+│   ├── package.json
+│   ├── Dockerfile
+│   └── ...
+├── docker-compose.yml     # Orquestração dos serviços
+├── .github/
+│   └── workflows/
+│       └── ci.yml         # Pipeline CI/CD
+└── README.md
+```
 
 ## 🛠️ Tecnologias utilizadas
 
@@ -88,32 +115,6 @@ cd backend
 cd frontend
 npm install
 npm run dev
-```
-
-## 📁 Estrutura do projeto
-
-```text
-taskflow/
-├── file
-│   ├── c4Model/
-│   ├── requisitos/
-├── taskflow-api/               # Projeto Spring Boot (Java 21)
-│   ├── src/
-│   ├── pom.xml
-│   ├── Dockerfile
-│   └── ...
-├── taskflow-app/              # Projeto Next.js
-│   ├── app/
-│   ├── components/
-│   ├── lib/
-│   ├── package.json
-│   ├── Dockerfile
-│   └── ...
-├── docker-compose.yml     # Orquestração dos serviços
-├── .github/
-│   └── workflows/
-│       └── ci.yml         # Pipeline CI/CD
-└── README.md
 ```
 
 <br>
