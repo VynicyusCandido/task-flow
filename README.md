@@ -15,6 +15,10 @@ No dia a dia, precisamos de uma ferramenta rápida e intuitiva para organizar no
 * 📱 Design responsivo (funciona em desktop e mobile)
 * 🎨 Interface moderna com Tailwind CSS e componentes shadcn/ui
 
+### C4 Model
+
+  * ![alt text](https://ibb.co/r2tkrr8H "Imagem C4 Model")
+
 ## 🛠️ Tecnologias utilizadas
 
 **Frontend**
@@ -90,12 +94,15 @@ npm run dev
 
 ```text
 taskflow/
-├── backend/               # Projeto Spring Boot (Java 21)
+├── file
+│   ├── c4Model/
+│   ├── requisitos/
+├── taskflow-api/               # Projeto Spring Boot (Java 21)
 │   ├── src/
 │   ├── pom.xml
 │   ├── Dockerfile
 │   └── ...
-├── frontend/              # Projeto Next.js
+├── taskflow-app/              # Projeto Next.js
 │   ├── app/
 │   ├── components/
 │   ├── lib/
