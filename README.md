@@ -15,10 +15,10 @@ No dia a dia, precisamos de uma ferramenta rápida e intuitiva para organizar no
 * 📱 Design responsivo (funciona em desktop e mobile)
 * 🎨 Interface moderna com Tailwind CSS e componentes shadcn/ui
 
-### C4 Model
+### ⚗️ C4 Model
 
   * [Imagem C4 Model](https://ibb.co/r2tkrr8H)
-  
+
 
 ## 📁 Estrutura do projeto
 
