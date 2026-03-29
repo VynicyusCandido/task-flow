@@ -17,7 +17,7 @@ No dia a dia, precisamos de uma ferramenta rápida e intuitiva para organizar no
 
 ### C4 Model
 
-  * ![alt text](https://ibb.co/r2tkrr8H "Imagem C4 Model")
+  * ![Imagem C4 Model](https://ibb.co/r2tkrr8H "")
 
 ## 🛠️ Tecnologias utilizadas
 
