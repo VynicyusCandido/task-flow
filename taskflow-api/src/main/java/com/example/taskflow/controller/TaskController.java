@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
-@CrossOrigin(origins = "*") // pesquisar sobre crossOrigin(origins = '*') se é um cross que pega todos endPoints, e como adicionar o cross
 @RequiredArgsConstructor
 public class TaskController {
 
