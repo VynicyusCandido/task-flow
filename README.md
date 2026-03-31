@@ -19,6 +19,52 @@ No dia a dia, precisamos de uma ferramenta rápida e intuitiva para organizar no
 
   * [Imagem C4 Model](https://ibb.co/r2tkrr8H)
 
+## 📋 Requisitos do Sistema
+
+## 🟢 Requisitos Funcionais (RF)
+*Representam o que o sistema deve fazer; as ações diretas do usuário.*
+
+### 1. Gestão de Usuários e Autenticação
+* **RF01 - Cadastro de Usuário:** O sistema deve permitir que novos usuários se cadastrem informando nome, e-mail e senha.
+* **RF02 - Login e Logout:** O sistema deve permitir login seguro com e-mail e senha, além de encerramento da sessão ativa.
+* **RF03 - Proteção de Perfil:** O usuário autenticado deve poder visualizar ou editar os dados básicos do seu perfil.
+
+### 2. Gestão de Projetos (Workspaces)
+* **RF04 - Criar Projeto:** Usuários logados devem ser capazes de criar novos projetos/boards do zero.
+* **RF05 - Editar/Excluir Projeto:** O administrador do projeto deve poder editar seus detalhes (título, descrição) ou excluí-lo por completo.
+* **RF06 - Convites e Equipe:** O criador do projeto deve ser capaz de convidar outros usuários cadastrados no sistema para acessarem o Board (via busca de e-mail ou gerando um link de acesso).
+* **RF07 - Controle de Papéis:** O projeto deve distinguir propriedades, como `Proprietário` (Pode excluir/adicionar pessoas) e `Membro` (Pode apenas gerenciar tarefas).
+
+### 3. Gestão de Tarefas
+* **RF08 - Gerenciamento Básico (CRUD):** Os membros de um projeto devem poder criar, editar detalhes, visualizar e deletar tarefas no projeto.
+* **RF09 - Campos da Tarefa:** Uma tarefa deve conter Título, Descrição, Prioridade (Alta, Média, Baixa), Data de Entrega e Responsável (Assignee).
+* **RF10 - Atribuição:** Deve ser possível atribuir (dar o *assign*) de uma tarefa a um membro específico do projeto.
+* **RF11 - Comentários na Tarefa:** Membros devem poder adicionar pequenos comentários/anotações na visualização de detalhes da tarefa para manter histórico.
+
+### 4. Kanban e Interações
+* **RF12 - Quadro Visual (Board):** As tarefas de um projeto devem ser exibidas em colunas que representam o seu *Status* (Padrão sugerido: `A Fazer`, `Em Andamento`, `Concluído`).
+* **RF13 - Funcionalidade Drag and Drop:** O usuário deve mover as tarefas lateralmente entre colunas ou alterar a ordem delas na mesma coluna usando o ponteiro do mouse (Arrastar e Soltar).
+
+---
+
+## 🔴 Requisitos Não Funcionais (RNF)
+*Representam os atributos de qualidade, segurança e arquitetura técnica.*
+
+### 1. Arquitetura e Tecnologias
+* **RNF01 - Frontend Stack:** O cliente web deve ser construído em **Next.js** usando as tecnologias já validadas (**Tailwind CSS** e **shadcn/ui**).
+* **RNF02 - Backend Stack:** A API que consumirá as regras de negócio será feita em **Java + Spring Boot**.
+* **RNF03 - Banco de Dados:** Modelagem e Persistência deverão ocorrer em um modelo relacional (ex: **PostgreSQL**) para garantir estrutura sólida entre relacionamento de Usuários, Projetos e Tarefas.
+
+### 2. Segurança
+* **RNF04 - Autenticação Segura (JWT):** A transição de dados de login deverá gerar um *JSON Web Token* para validar as comunicações futuras na API. Recomenda-se guardar o token de forma segura (como *HttpOnly Cookies* ou adequadamente no estado da aplicação) para evitar *XSS*.
+* **RNF05 - Hashing de Senhas:** Nenhuma senha deverá ser salva em texto puro. Deve-se aplicar criptografia (ex: **Bcrypt**) nos cadastros.
+* **RNF06 - Autorização de Dados:** Um usuário não pode acessar, via API ou UI, as informações de tarefas de um projeto para o qual não foi convidado. 
+
+### 3. Usabilidade e Desempenho (UX/UI)
+* **RNF07 - Biblioteca de Drag & Drop:** Para manter a leveza no frontend React, sugere-se a adoção de bibliotecas modernas para manuseio do Kanban, como `@hello-pangea/dnd` ou `dnd-kit`.
+* **RNF08 - Foco Web/Desktop:** Por ser um projeto de viés acadêmico, o Kanban e suas interações (Drag & Drop) serão projetados e testados visando uso primário via navegadores Desktop com mouse. Não haverá exigência de criação de componentes responsivos ou adaptados para telas móveis.
+* **RNF09 - Optimistic UI (Tempo de Resposta Perceptível):** Ao mover um card via UI no Kanban, a requisição de atualização para o backend deverá correr de forma secundária; o Frontend aplicará a mudança visual imediatamente para provar sensação instantânea de performance para o usuário. 
+
 
 ## 📁 Estrutura do projeto
 
