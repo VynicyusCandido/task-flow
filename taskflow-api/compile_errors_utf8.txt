@@ -1,0 +1,57 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.example:taskflow-api >----------------------
+[INFO] Building taskflow-api 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ taskflow-api ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ taskflow-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 39 source files with javac [debug parameters release 21] to target\classes
+[INFO] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/security/JwtAuthenticationFilter.java: C:\Users\vynic\ProjectCode\taskflow\taskflow-api\src\main\java\com\example\taskflow\security\JwtAuthenticationFilter.java uses or overrides a deprecated API.
+[INFO] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/security/JwtAuthenticationFilter.java: Recompile with -Xlint:deprecation for details.
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/mapper/ProjectMemberMapper.java:[9,8] Unmapped target properties: "project, user, joinedAt". Occured at 'void partialUpdate(E entity, D dto)' in 'EntityMapper'.
+[WARNING] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/mapper/TaskMapper.java:[9,8] Unmapped target properties: "project, assignee". Occured at 'void partialUpdate(E entity, D dto)' in 'EntityMapper'.
+[WARNING] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/mapper/TaskCommentMapper.java:[9,8] Unmapped target properties: "task, author". Occured at 'void partialUpdate(E entity, D dto)' in 'EntityMapper'.
+[INFO] 3 warnings 
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/config/SecurityConfig.java:[68,50] constructor DaoAuthenticationProvider in class org.springframework.security.authentication.dao.DaoAuthenticationProvider cannot be applied to given types;
+  required: org.springframework.security.core.userdetails.UserDetailsService
+  found:    no arguments
+  reason: actual and formal argument lists differ in length
+[ERROR] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/config/SecurityConfig.java:[69,21] cannot find symbol
+  symbol:   method setUserDetailsService(org.springframework.security.core.userdetails.UserDetailsService)
+  location: variable authProvider of type org.springframework.security.authentication.dao.DaoAuthenticationProvider
+[INFO] 2 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.767 s
+[INFO] Finished at: 2026-04-06T20:53:04-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:compile (default-compile) on project taskflow-api: Compilation failure: Compilation failure: 
+[ERROR] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/config/SecurityConfig.java:[68,50] constructor DaoAuthenticationProvider in class org.springframework.security.authentication.dao.DaoAuthenticationProvider cannot be applied to given types;
+[ERROR]   required: org.springframework.security.core.userdetails.UserDetailsService
+[ERROR]   found:    no arguments
+[ERROR]   reason: actual and formal argument lists differ in length
+[ERROR] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/config/SecurityConfig.java:[69,21] cannot find symbol
+[ERROR]   symbol:   method setUserDetailsService(org.springframework.security.core.userdetails.UserDetailsService)
+[ERROR]   location: variable authProvider of type org.springframework.security.authentication.dao.DaoAuthenticationProvider
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

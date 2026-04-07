@@ -1,0 +1,184 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ----------------------< com.example:taskflow-api >----------------------
+[INFO] Building taskflow-api 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ taskflow-api ---
+[INFO] Deleting C:\Users\vynic\ProjectCode\taskflow\taskflow-api\target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ taskflow-api ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 0 resource from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ taskflow-api ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 39 source files with javac [debug parameters release 21] to target\classes
+[INFO] MapStruct: Using accessor naming strategy: org.mapstruct.ap.spi.DefaultAccessorNamingStrategy
+[INFO] MapStruct: Using builder provider: org.mapstruct.ap.spi.DefaultBuilderProvider
+[INFO] MapStruct: Using enum naming strategy: org.mapstruct.ap.spi.DefaultEnumMappingStrategy
+[INFO]  MapStruct: processing: com.example.taskflow.mapper.ProjectMapper.
+[INFO] - MapStruct: creating bean mapping method implementation for com.example.taskflow.dtos.project.ProjectDTO toDto(com.example.taskflow.model.Project entity).
+[INFO] -- MapStruct: mapping property: entity.getId() to: id(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: entity.getId().
+[INFO] -- MapStruct: mapping property: entity.getName() to: name(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: entity.getName().
+[INFO] -- MapStruct: mapping property: entity.getDescription() to: description(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: entity.getDescription().
+[INFO] -- MapStruct: mapping property: entity.getCreatedAt() to: createdAt(java.time.LocalDateTime).
+[INFO] -- MapStruct: selecting property mapping: entity.getCreatedAt().
+[INFO] - MapStruct: creating iterable mapping method implementation for java.util.List<com.example.taskflow.model.Project> toEntity(java.util.List<com.example.taskflow.dtos.project.ProjectDTO> dtoList).
+[INFO] -- MapStruct: selecting element mapping: com.example.taskflow.model.Project #toEntity(projectDTO).
+[INFO] - MapStruct: creating iterable mapping method implementation for java.util.List<com.example.taskflow.dtos.project.ProjectDTO> toDto(java.util.List<com.example.taskflow.model.Project> entityList).
+[INFO] -- MapStruct: selecting element mapping: com.example.taskflow.dtos.project.ProjectDTO #toDto(project).
+[INFO] - MapStruct: creating bean mapping method implementation for void partialUpdate(@MappingTarget com.example.taskflow.model.Project entity, com.example.taskflow.dtos.project.ProjectDTO dto).
+[INFO] -- MapStruct: mapping property: dto.getId() to: setId(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: dto.getId().
+[INFO] -- MapStruct: mapping property: dto.getName() to: setName(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getName().
+[INFO] -- MapStruct: mapping property: dto.getDescription() to: setDescription(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getDescription().
+[INFO] -- MapStruct: mapping property: dto.getCreatedAt() to: setCreatedAt(java.time.LocalDateTime).
+[INFO] -- MapStruct: selecting property mapping: dto.getCreatedAt().
+[INFO] - MapStruct: creating bean mapping method implementation for com.example.taskflow.model.Project toEntity(com.example.taskflow.dtos.project.ProjectDTO dto).
+[INFO] -- MapStruct: mapping property: dto.getName() to: name(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getName().
+[INFO] -- MapStruct: mapping property: dto.getDescription() to: description(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getDescription().
+[INFO]  MapStruct: processing: com.example.taskflow.mapper.TaskCommentMapper.
+[INFO] - MapStruct: creating iterable mapping method implementation for java.util.List<com.example.taskflow.model.TaskComment> toEntity(java.util.List<com.example.taskflow.dtos.task.TaskCommentDTO> dtoList).
+[INFO] -- MapStruct: selecting element mapping: com.example.taskflow.model.TaskComment #toEntity(taskCommentDTO).
+[INFO] - MapStruct: creating iterable mapping method implementation for java.util.List<com.example.taskflow.dtos.task.TaskCommentDTO> toDto(java.util.List<com.example.taskflow.model.TaskComment> entityList).
+[INFO] -- MapStruct: selecting element mapping: com.example.taskflow.dtos.task.TaskCommentDTO #toDto(taskComment).
+[INFO] - MapStruct: creating bean mapping method implementation for void partialUpdate(@MappingTarget com.example.taskflow.model.TaskComment entity, com.example.taskflow.dtos.task.TaskCommentDTO dto).
+[INFO] -- MapStruct: mapping property: dto.getId() to: setId(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: dto.getId().
+[INFO] -- MapStruct: mapping property: dto.getContent() to: setContent(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getContent().
+[INFO] -- MapStruct: mapping property: dto.getCreatedAt() to: setCreatedAt(java.time.LocalDateTime).
+[INFO] -- MapStruct: selecting property mapping: dto.getCreatedAt().
+[INFO] - MapStruct: creating bean mapping method implementation for com.example.taskflow.dtos.task.TaskCommentDTO toDto(com.example.taskflow.model.TaskComment entity).
+[INFO] -- MapStruct: mapping property: entityAuthorId( entity ) to: authorId(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: entityAuthorId( entity ).
+[INFO] -- MapStruct: mapping property: entityAuthorName( entity ) to: authorName(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: entityAuthorName( entity ).
+[INFO] -- MapStruct: mapping property: entity.getId() to: id(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: entity.getId().
+[INFO] -- MapStruct: mapping property: entity.getContent() to: content(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: entity.getContent().
+[INFO] -- MapStruct: mapping property: entity.getCreatedAt() to: createdAt(java.time.LocalDateTime).
+[INFO] -- MapStruct: selecting property mapping: entity.getCreatedAt().
+[INFO] - MapStruct: creating bean mapping method implementation for com.example.taskflow.model.TaskComment toEntity(com.example.taskflow.dtos.task.TaskCommentDTO dto).
+[INFO] -- MapStruct: mapping property: dto.getContent() to: content(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getContent().
+[INFO]  MapStruct: processing: com.example.taskflow.mapper.ProjectMemberMapper.
+[INFO] - MapStruct: creating iterable mapping method implementation for java.util.List<com.example.taskflow.model.ProjectMember> toEntity(java.util.List<com.example.taskflow.dtos.project.ProjectMemberDTO> dtoList).
+[INFO] -- MapStruct: selecting element mapping: com.example.taskflow.model.ProjectMember #toEntity(projectMemberDTO).
+[INFO] - MapStruct: creating iterable mapping method implementation for java.util.List<com.example.taskflow.dtos.project.ProjectMemberDTO> toDto(java.util.List<com.example.taskflow.model.ProjectMember> entityList).
+[INFO] -- MapStruct: selecting element mapping: com.example.taskflow.dtos.project.ProjectMemberDTO #toDto(projectMember).
+[INFO] - MapStruct: creating bean mapping method implementation for void partialUpdate(@MappingTarget com.example.taskflow.model.ProjectMember entity, com.example.taskflow.dtos.project.ProjectMemberDTO dto).
+[INFO] -- MapStruct: mapping property: dto.getId() to: setId(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: dto.getId().
+[INFO] -- MapStruct: mapping property: dto.getRole() to: setRole(com.example.taskflow.model.enums.ProjectRole).
+[INFO] -- MapStruct: selecting property mapping: dto.getRole().
+[INFO] - MapStruct: creating bean mapping method implementation for com.example.taskflow.dtos.project.ProjectMemberDTO toDto(com.example.taskflow.model.ProjectMember entity).
+[INFO] -- MapStruct: mapping property: entityUserId( entity ) to: userId(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: entityUserId( entity ).
+[INFO] -- MapStruct: mapping property: entityUserName( entity ) to: userName(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: entityUserName( entity ).
+[INFO] -- MapStruct: mapping property: entityUserEmail( entity ) to: userEmail(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: entityUserEmail( entity ).
+[INFO] -- MapStruct: mapping property: entity.getId() to: id(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: entity.getId().
+[INFO] -- MapStruct: mapping property: entity.getRole() to: role(com.example.taskflow.model.enums.ProjectRole).
+[INFO] -- MapStruct: selecting property mapping: entity.getRole().
+[INFO] - MapStruct: creating bean mapping method implementation for com.example.taskflow.model.ProjectMember toEntity(com.example.taskflow.dtos.project.ProjectMemberDTO dto).
+[INFO] -- MapStruct: mapping property: dto.getRole() to: role(com.example.taskflow.model.enums.ProjectRole).
+[INFO] -- MapStruct: selecting property mapping: dto.getRole().
+[INFO]  MapStruct: processing: com.example.taskflow.mapper.TaskMapper.
+[INFO] - MapStruct: creating iterable mapping method implementation for java.util.List<com.example.taskflow.model.Task> toEntity(java.util.List<com.example.taskflow.dtos.task.TaskDTO> dtoList).
+[INFO] -- MapStruct: selecting element mapping: com.example.taskflow.model.Task #toEntity(taskDTO).
+[INFO] - MapStruct: creating iterable mapping method implementation for java.util.List<com.example.taskflow.dtos.task.TaskDTO> toDto(java.util.List<com.example.taskflow.model.Task> entityList).
+[INFO] -- MapStruct: selecting element mapping: com.example.taskflow.dtos.task.TaskDTO #toDto(task).
+[INFO] - MapStruct: creating bean mapping method implementation for void partialUpdate(@MappingTarget com.example.taskflow.model.Task entity, com.example.taskflow.dtos.task.TaskDTO dto).
+[INFO] -- MapStruct: mapping property: dto.getId() to: setId(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: dto.getId().
+[INFO] -- MapStruct: mapping property: dto.getTitle() to: setTitle(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getTitle().
+[INFO] -- MapStruct: mapping property: dto.getDescription() to: setDescription(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getDescription().
+[INFO] -- MapStruct: mapping property: dto.getStatus() to: setStatus(com.example.taskflow.model.enums.TaskStatus).
+[INFO] -- MapStruct: selecting property mapping: dto.getStatus().
+[INFO] -- MapStruct: mapping property: dto.getPriority() to: setPriority(com.example.taskflow.model.enums.TaskPriority).
+[INFO] -- MapStruct: selecting property mapping: dto.getPriority().
+[INFO] -- MapStruct: mapping property: dto.getDueDate() to: setDueDate(java.time.LocalDate).
+[INFO] -- MapStruct: selecting property mapping: dto.getDueDate().
+[INFO] -- MapStruct: mapping property: dto.getOrderIndex() to: setOrderIndex(java.lang.Integer).
+[INFO] -- MapStruct: selecting property mapping: dto.getOrderIndex().
+[INFO] -- MapStruct: mapping property: dto.getCreatedAt() to: setCreatedAt(java.time.LocalDateTime).
+[INFO] -- MapStruct: selecting property mapping: dto.getCreatedAt().
+[INFO] - MapStruct: creating bean mapping method implementation for com.example.taskflow.dtos.task.TaskDTO toDto(com.example.taskflow.model.Task entity).
+[INFO] -- MapStruct: mapping property: entityAssigneeId( entity ) to: assigneeId(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: entityAssigneeId( entity ).
+[INFO] -- MapStruct: mapping property: entityAssigneeName( entity ) to: assigneeName(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: entityAssigneeName( entity ).
+[INFO] -- MapStruct: mapping property: entity.getId() to: id(java.lang.Long).
+[INFO] -- MapStruct: selecting property mapping: entity.getId().
+[INFO] -- MapStruct: mapping property: entity.getTitle() to: title(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: entity.getTitle().
+[INFO] -- MapStruct: mapping property: entity.getDescription() to: description(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: entity.getDescription().
+[INFO] -- MapStruct: mapping property: entity.getStatus() to: status(com.example.taskflow.model.enums.TaskStatus).
+[INFO] -- MapStruct: selecting property mapping: entity.getStatus().
+[INFO] -- MapStruct: mapping property: entity.getPriority() to: priority(com.example.taskflow.model.enums.TaskPriority).
+[INFO] -- MapStruct: selecting property mapping: entity.getPriority().
+[INFO] -- MapStruct: mapping property: entity.getDueDate() to: dueDate(java.time.LocalDate).
+[INFO] -- MapStruct: selecting property mapping: entity.getDueDate().
+[INFO] -- MapStruct: mapping property: entity.getOrderIndex() to: orderIndex(java.lang.Integer).
+[INFO] -- MapStruct: selecting property mapping: entity.getOrderIndex().
+[INFO] -- MapStruct: mapping property: entity.getCreatedAt() to: createdAt(java.time.LocalDateTime).
+[INFO] -- MapStruct: selecting property mapping: entity.getCreatedAt().
+[INFO] - MapStruct: creating bean mapping method implementation for com.example.taskflow.model.Task toEntity(com.example.taskflow.dtos.task.TaskDTO dto).
+[INFO] -- MapStruct: mapping property: dto.getTitle() to: title(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getTitle().
+[INFO] -- MapStruct: mapping property: dto.getDescription() to: description(java.lang.String).
+[INFO] -- MapStruct: selecting property mapping: dto.getDescription().
+[INFO] -- MapStruct: mapping property: dto.getStatus() to: status(com.example.taskflow.model.enums.TaskStatus).
+[INFO] -- MapStruct: selecting property mapping: dto.getStatus().
+[INFO] -- MapStruct: mapping property: dto.getPriority() to: priority(com.example.taskflow.model.enums.TaskPriority).
+[INFO] -- MapStruct: selecting property mapping: dto.getPriority().
+[INFO] -- MapStruct: mapping property: dto.getDueDate() to: dueDate(java.time.LocalDate).
+[INFO] -- MapStruct: selecting property mapping: dto.getDueDate().
+[INFO] -- MapStruct: mapping property: dto.getOrderIndex() to: orderIndex(java.lang.Integer).
+[INFO] -- MapStruct: selecting property mapping: dto.getOrderIndex().
+[INFO] Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+[INFO] -------------------------------------------------------------
+[WARNING] COMPILATION WARNING : 
+[INFO] -------------------------------------------------------------
+[WARNING] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/mapper/TaskCommentMapper.java:[9,8] Unmapped target properties: "task, author". Occured at 'void partialUpdate(E entity, D dto)' in 'EntityMapper'.
+[WARNING] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/mapper/ProjectMemberMapper.java:[9,8] Unmapped target properties: "project, user, joinedAt". Occured at 'void partialUpdate(E entity, D dto)' in 'EntityMapper'.
+[WARNING] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/mapper/TaskMapper.java:[9,8] Unmapped target properties: "project, assignee". Occured at 'void partialUpdate(E entity, D dto)' in 'EntityMapper'.
+[INFO] 3 warnings 
+[INFO] -------------------------------------------------------------
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/config/SecurityConfig.java:[68,80] incompatible types: org.springframework.security.core.userdetails.UserDetailsService cannot be converted to org.springframework.security.crypto.password.PasswordEncoder
+[INFO] 1 error
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.202 s
+[INFO] Finished at: 2026-04-06T21:24:45-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile (default-compile) on project taskflow-api: Compilation failure
+[ERROR] /C:/Users/vynic/ProjectCode/taskflow/taskflow-api/src/main/java/com/example/taskflow/config/SecurityConfig.java:[68,80] incompatible types: org.springframework.security.core.userdetails.UserDetailsService cannot be converted to org.springframework.security.crypto.password.PasswordEncoder
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

@@ -1,18 +1,22 @@
 package com.example.taskflow.mapper;
 
-import com.example.taskflow.dtos.TaskDTO;
+import com.example.taskflow.dtos.task.TaskDTO;
 import com.example.taskflow.model.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
-@Mapper
-public interface TaskMapper {
+@Mapper(componentModel = "spring")
+public interface TaskMapper extends EntityMapper<TaskDTO, Task> {
 
-    TaskMapper INSTANCE = Mappers.getMapper(TaskMapper.class);
+    @Override
+    @Mapping(source = "assignee.id", target = "assigneeId")
+    @Mapping(source = "assignee.name", target = "assigneeName")
+    TaskDTO toDto(Task entity);
 
-    TaskDTO toDTO(Task task);
-
+    @Override
     @Mapping(target = "id", ignore = true)
-    Task toEntity(TaskDTO taskDTO);
+    @Mapping(target = "project", ignore = true)
+    @Mapping(target = "assignee", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    Task toEntity(TaskDTO dto);
 }
