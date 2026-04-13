@@ -1,0 +1,71 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.0.1/C4_Component.puml
+
+title C4 Model (Contexto, Container e Componente) - TaskFlow (Atualizado)
+
+Person(usuario, "Usuário", "Gerencia tarefas, projetos e membros no dia a dia")
+
+System_Boundary(taskflow, "TaskFlow") {
+    
+    Container(frontend, "Frontend", "Next.js, React", "Interface web responsiva completa para gestão de Kanban (TaskFlow App)")
+    
+    Container_Boundary(backend, "Backend (Spring Boot)") {
+        
+        ' Auth Domain
+        Component(auth_controller, "Auth Controller", "REST Controller", "Gerencia registro e login de usuários")
+        Component(jwt_service, "JWT Service", "Security Service", "Geração e validação de tokens JWT")
+        Component(user_repo, "User Repository", "JPA Repository", "Persistência de dados de usuários")
+        
+        ' Project Domain
+        Component(project_controller, "Project Controller", "REST Controller", "Gerencia projetos e seus membros")
+        Component(project_service, "Project Service", "Service Core", "Regras de negócio de projetos e membros")
+        Component(project_mapper, "Project Mapper", "MapStruct", "Conversão entre DTOs e entidades Project/ProjectMember")
+        Component(project_repo, "Project Repository", "JPA Repository", "Persistência de projetos")
+        Component(member_repo, "Project Member Repository", "JPA Repository", "Persistência de vínculos de membros")
+
+        ' Task Domain
+        Component(task_controller, "Task Controller", "REST Controller", "Gerencia tarefas (Kanban) e comentários")
+        Component(task_service, "Task Service", "Service Core", "Regras de negócio de tarefas")
+        Component(task_mapper, "Task Mapper", "MapStruct", "Conversão entre DTOs e entidades Task/TaskComment")
+        Component(task_repo, "Task Repository", "JPA Repository", "Persistência de tarefas")
+        Component(comment_repo, "Task Comment Repository", "JPA Repository", "Persistência de comentários nas tarefas")
+    }
+
+    ContainerDb(db, "Banco de Dados", "PostgreSQL", "Armazena usuários, projetos, membros, tarefas e comentários")
+}
+
+' Relação do Usuário
+Rel(usuario, frontend, "Acessa e Interage", "HTTPS")
+
+' Relações do Frontend com os Controllers da API
+Rel(frontend, auth_controller, "Autentica e Registra", "JSON/REST")
+Rel(frontend, project_controller, "Gerencia Projetos", "JSON/REST")
+Rel(frontend, task_controller, "Gerencia Tarefas", "JSON/REST")
+
+' Relações Internas - Auth
+Rel(auth_controller, jwt_service, "Utiliza para tokens")
+Rel(auth_controller, user_repo, "Lê/Escreve")
+
+' Relações Internas - Project
+Rel(project_controller, project_service, "Delega operações")
+Rel(project_service, project_mapper, "Tradução DTO <-> Entidade")
+Rel(project_service, project_repo, "Lê/Escreve")
+Rel(project_service, member_repo, "Lê/Escreve")
+Rel(project_service, user_repo, "Valida usuários (membros)")
+
+' Relações Internas - Task
+Rel(task_controller, task_service, "Delega operações")
+Rel(task_service, task_mapper, "Tradução DTO <-> Entidade")
+Rel(task_service, task_repo, "Lê/Escreve")
+Rel(task_service, comment_repo, "Lê/Escreve")
+Rel(task_service, project_repo, "Valida pertencimento a projeto")
+Rel(task_service, user_repo, "Lê responsável/criador")
+
+' Relações de Repositório com Banco de Dados
+Rel(user_repo, db, "Lê/Escreve", "JDBC")
+Rel(project_repo, db, "Lê/Escreve", "JDBC")
+Rel(member_repo, db, "Lê/Escreve", "JDBC")
+Rel(task_repo, db, "Lê/Escreve", "JDBC")
+Rel(comment_repo, db, "Lê/Escreve", "JDBC")
+
+@enduml
