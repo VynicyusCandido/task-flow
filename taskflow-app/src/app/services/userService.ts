@@ -1,31 +1,41 @@
 "use server";
 
 import { User } from "@/@types/User";
-import { mockUsers } from "@/mocks/users";
+import { fetchApi } from "@/lib/api";
 
 export async function getUsers(): Promise<User[]> {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockUsers;
+  try {
+    const response = await fetchApi("/api/users/me", {
+      method: "GET",
+      cache: "no-store" // Para sempre pegar os dados frescos do usuário
+    });
+
+    if (!response.ok) {
+      console.error("Failed to fetch current user", response.status);
+      return [];
+    }
+
+    const currentUser: User = await response.json();
+    
+    // Retornamos como array para manter compatibilidade com o dashboard atual
+    return [currentUser];
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return [];
+  }
 }
 
 export async function getUserById(userId: string): Promise<User | undefined> {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockUsers.find(u => u.id === userId);
+  // A ser implementado futuramente quando houver endpoint de busca por ID
+  throw new Error("Not implemented yet");
 }
 
 export async function createUser(userData: Omit<User, "id">): Promise<User> {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const newUser: User = { ...userData, id: `u${mockUsers.length + 1}` };
-  mockUsers.push(newUser);
-  return newUser;
+  // A criação de usuários agora ocorre na rota de /register pública
+  throw new Error("Not implemented yet");
 }
 
 export async function updateUser(userId: string, updates: Partial<Omit<User, "id">>): Promise<User | undefined> {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const index = mockUsers.findIndex(u => u.id === userId);
-  if (index === -1) return undefined;
-  
-  const updatedUser = { ...mockUsers[index], ...updates };
-  mockUsers[index] = updatedUser;
-  return updatedUser;
+  // A ser implementado quando houver endpoint de PUT /api/users/{id}
+  throw new Error("Not implemented yet");
 }
