@@ -12,8 +12,34 @@ on:
       - 'taskflow-api/**'
 
 jobs:
-  build-and-test:
-    name: Build & Test Backend
+  build:
+    name: Build Backend
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./taskflow-api
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Grant execute permission for mvnw
+        run: chmod +x mvnw
+
+      - name: Build with Maven (Compile)
+        run: ./mvnw test-compile
+
+  test:
+    name: Test Backend
+    needs: build
     runs-on: ubuntu-latest
     
     defaults:
@@ -37,7 +63,7 @@ jobs:
       - name: Run Unit Tests (Maven Test)
         run: ./mvnw test
 
-      - name: Publish Test Report (Optional)
+      - name: Publish Test Report
         uses: mikepenz/action-junit-report@v4
         if: success() || failure() # Executa mesmo se os testes falharem para gerar o relatório
         with:
