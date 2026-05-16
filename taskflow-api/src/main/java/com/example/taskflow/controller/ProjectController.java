@@ -7,7 +7,6 @@ import com.example.taskflow.service.ProjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class ProjectController {
     public ProjectDTO createProject(@Valid @RequestBody ProjectDTO projectDTO) {
         return projectService.createProject(projectDTO);
     }
-    
+
     @GetMapping("/{id}")
     public ProjectDTO getProjectById(@PathVariable Long id) {
         return projectService.getProjectById(id);
