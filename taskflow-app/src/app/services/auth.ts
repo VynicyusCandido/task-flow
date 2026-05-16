@@ -4,32 +4,52 @@ import { cookies } from "next/headers";
 import { Auth } from "@/app/enums";
 import { redirect } from "next/navigation";
 
-// Exemplo de autenticação fluindo unicamente do lado do Servidor com Server Actions
 export async function authenticateServerAction(formData: FormData) {
-  // Simulando um tempo de processamento como num fetch de backend real.
-  // Em cenário real: const res = await fetch('http://localhost:8080/api/auth'...)
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  const email = formData.get("email");
-  const password = formData.get("password");
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
 
   if (!email || !password) {
     return { error: "Email e Senha são obrigatórios" };
   }
 
-  // Pegando a chave agora como variável secreta do servidor
-  const dummyToken = process.env.NEXT_PUBLIC_DUMMY_TOKEN || "";
-  
-  // Gravando o cookie do Next.js de forma nativa e encriptada (HTTP-only default config behaviour)
-  const cookieStore = await cookies();
-  cookieStore.set(Auth.AUTH_TOKEN, dummyToken, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    sameSite: "strict",
-  });
+  try {
+    const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+    
+    // Fazendo o POST para a rota real do backend
+    const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-  // O redirect joga o usuário imediatamente e termina a Server Action
+    if (!response.ok) {
+      return { error: "E-mail ou senha incorretos" };
+    }
+
+    // O backend retorna algo como { token: "ey...", name: "...", email: "..." }
+    const data = await response.json();
+    const jwtToken = data.token;
+
+    if (!jwtToken) {
+      return { error: "Token não retornado pelo servidor" };
+    }
+
+    const cookieStore = await cookies();
+    cookieStore.set(Auth.AUTH_TOKEN, jwtToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      sameSite: "lax", // Alterado de strict para lax por conta do redirect no client do next
+    });
+
+  } catch (error) {
+    console.error("Login failed:", error);
+    return { error: "Falha de conexão com o servidor" };
+  }
+
+  // O redirect deve ocorrer fora do bloco try-catch no Next.js
   redirect("/dashboard");
 }
 
