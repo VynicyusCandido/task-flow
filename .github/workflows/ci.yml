@@ -1,27 +1,71 @@
-name: TaskFlow API CI
+name: TaskFlow Backend CI
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'taskflow-api/**'
+      - '.github/workflows/ci.yml'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'taskflow-api/**'
 
 jobs:
   build:
+    name: Build Backend
     runs-on: ubuntu-latest
+    
     defaults:
       run:
         working-directory: ./taskflow-api
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
 
-    - name: Build with Maven
-      run: mvn clean package -DskipTests
+      - name: Grant execute permission for mvnw
+        run: chmod +x mvnw
+
+      - name: Build with Maven (Compile)
+        run: ./mvnw test-compile
+
+  test:
+    name: Test Backend
+    needs: build
+    runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./taskflow-api
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Grant execute permission for mvnw
+        run: chmod +x mvnw
+
+      - name: Run Unit Tests (Maven Test)
+        run: ./mvnw test
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: success() || failure() # Executa mesmo se os testes falharem para gerar o relatório
+        with:
+          report_paths: '**/target/surefire-reports/TEST-*.xml'
+          check_name: "Backend Unit Tests Report"
