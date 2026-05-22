@@ -1,0 +1,42 @@
+name: TaskFlow App CI
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'taskflow-app/**'
+      - '.github/workflows/app-ci.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'taskflow-app/**'
+      - '.github/workflows/app-ci.yml'
+
+jobs:
+  build-and-lint:
+    name: Build & Lint Frontend
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./taskflow-app
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: './taskflow-app/package-lock.json'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Build Next.js App
+        run: npm run build
