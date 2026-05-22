@@ -52,7 +52,7 @@ describe("taskValidation", () => {
 
     const taskInvalidPriority = {
       ...taskWithoutPriority,
-      priority: "INVALID_PRIORITY" as any,
+      priority: "INVALID_PRIORITY" as unknown as TaskPriority,
     };
     expect(validateTaskCreation(taskInvalidPriority)).toBe(false);
   });
