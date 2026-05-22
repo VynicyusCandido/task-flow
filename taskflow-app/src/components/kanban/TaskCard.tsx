@@ -3,7 +3,7 @@
 import { Draggable } from "@hello-pangea/dnd";
 import { Task, TaskPriority } from "@/@types/Task";
 import { format } from "date-fns";
-import { CalendarIcon, Clock, GripVertical } from "lucide-react";
+import { CalendarIcon, GripVertical } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface TaskCardProps {

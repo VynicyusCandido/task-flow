@@ -19,7 +19,7 @@ export default async function Token(token: string): Promise<Introspect> {
       exp: decoded.exp,
       iat: decoded.iat,
     };
-  } catch (error) {
+  } catch (_error) {
     return { active: false };
   }
 }

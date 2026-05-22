@@ -1,6 +1,6 @@
 "use server";
 
-import { Task, TaskComment, TaskMoveRequest } from "@/@types/Task";
+import { Task, TaskMoveRequest } from "@/@types/Task";
 import { fetchApi } from "@/lib/api";
 
 export async function getTasks(projectId: number): Promise<Task[]> {
