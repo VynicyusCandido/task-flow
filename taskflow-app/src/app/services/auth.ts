@@ -15,7 +15,6 @@ export async function authenticateServerAction(formData: FormData) {
   try {
     const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
     
-    // Fazendo o POST para a rota real do backend
     const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
       method: "POST",
       headers: {
@@ -28,7 +27,6 @@ export async function authenticateServerAction(formData: FormData) {
       return { error: "E-mail ou senha incorretos" };
     }
 
-    // O backend retorna algo como { token: "ey...", name: "...", email: "..." }
     const data = await response.json();
     const jwtToken = data.token;
 
@@ -41,15 +39,15 @@ export async function authenticateServerAction(formData: FormData) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       path: "/",
-      sameSite: "lax", // Alterado de strict para lax por conta do redirect no client do next
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24,
     });
 
   } catch (error) {
     console.error("Login failed:", error);
-    return { error: "Falha de conexão com o servidor" };
+    return { error: "Erro interno no servidor de autenticação" };
   }
 
-  // O redirect deve ocorrer fora do bloco try-catch no Next.js
   redirect("/dashboard");
 }
 

@@ -14,7 +14,6 @@ export default function LoginPage() {
   const handleLogin = async (formData: FormData) => {
     setLoading(true);
     await authenticateServerAction(formData);
-    // Em caso de erro na server action, o loading acaba. Se sucesso, o server faz o redirect.
     setLoading(false);
   };
 

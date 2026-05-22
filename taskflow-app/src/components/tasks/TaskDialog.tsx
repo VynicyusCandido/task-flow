@@ -14,7 +14,7 @@ interface TaskDialogProps {
   onOpenChange: (open: boolean) => void;
   task?: Task | null;
   onSave: (task: Partial<Task>) => Promise<void>;
-  status?: TaskStatus; // Default status for new task
+  status?: TaskStatus;
   members?: ProjectMember[];
 }
 

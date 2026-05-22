@@ -51,31 +51,24 @@ export function Board({ projectId, initialTasks, onTaskClick }: BoardProps) {
     const sourceIndex = newTasks.findIndex(t => t.id === draggedTask.id);
     newTasks.splice(sourceIndex, 1);
 
-    // Filter tasks in destination column to find insertion point
     const destColumnTasks = newTasks.filter(t => t.status === newStatus)
       .sort((a, b) => a.orderIndex - b.orderIndex);
     
-    // Create updated task
     const updatedTask = { ...draggedTask, status: newStatus };
     
-    // Rebuild the array
-    // Insert at destination.index within the filtered column
     destColumnTasks.splice(destination.index, 0, updatedTask);
     
-    // Re-assign order indexes for destination column
     const reorderedDestTasks = destColumnTasks.map((t, index) => ({
       ...t,
       orderIndex: index
     }));
 
-    // Re-assign order indexes for source column if it's different
     const reorderedSourceTasks = previousStatus === newStatus 
       ? [] 
       : newTasks.filter(t => t.status === previousStatus)
           .sort((a, b) => a.orderIndex - b.orderIndex)
           .map((t, index) => ({ ...t, orderIndex: index }));
 
-    // Merge everything back
     const finalTasks = newTasks
       .filter(t => t.status !== newStatus && t.status !== previousStatus)
       .concat(reorderedDestTasks)
@@ -92,7 +85,7 @@ export function Board({ projectId, initialTasks, onTaskClick }: BoardProps) {
     } catch (error) {
       console.error("Failed to move task", error);
       toast.error("Erro ao mover a tarefa. As alterações foram revertidas.");
-      setTasks(initialTasks); // Revert on failure
+      setTasks(initialTasks);
     }
   };
 

@@ -33,7 +33,7 @@ export default function DashboardPage() {
       setProjects(userProjects);
       
       if (userProjects.length > 0) {
-        const selectedProject = userProjects[0]; // Select first project by default
+        const selectedProject = userProjects[0];
         setCurrentProject(selectedProject);
         
         const [projectTasks, members] = await Promise.all([
@@ -75,14 +75,12 @@ export default function DashboardPage() {
 
     try {
       if (taskData.id) {
-        // Edit
         const updated = await updateTask(currentProject.id, taskData.id, taskData);
         if (updated) {
           setTasks(tasks.map(t => t.id === updated.id ? updated : t));
           toast.success("Tarefa atualizada com sucesso!");
         }
       } else {
-        // Create
         const created = await createTask(currentProject.id, taskData);
         if (created) {
           setTasks([...tasks, created]);
@@ -102,7 +100,7 @@ export default function DashboardPage() {
       if (created) {
         setProjects([...projects, created]);
         setCurrentProject(created);
-        setTasks([]); // new project has no tasks
+        setTasks([]);
         const members = await getProjectMembers(created.id);
         setProjectMembers(members);
         toast.success("Projeto criado com sucesso!");
@@ -172,7 +170,6 @@ export default function DashboardPage() {
             </div>
             <h2 className="text-xl font-bold text-foreground mb-2">Nenhum projeto encontrado</h2>
             <p className="text-muted-foreground mb-6">Crie um projeto para começar a organizar suas tarefas.</p>
-            {/* Aqui chamamos a modal de criar projeto */}
             <Button onClick={() => setIsProjectDialogOpen(true)}>Criar Novo Projeto</Button>
           </div>
         ) : (
