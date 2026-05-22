@@ -7,7 +7,7 @@ test.describe('Página de Login', () => {
     await page.goto('/login');
 
     // Verifica se o título da página ou logo TaskFlow está presente
-    await expect(page.getByRole('heading', { name: /TaskFlow/i })).toBeVisible();
+    await expect(page.getByText('TaskFlow', { exact: true })).toBeVisible();
     await expect(page.getByText('Acesse seu workspace')).toBeVisible();
 
     // Verifica a presença dos campos de e-mail e senha
