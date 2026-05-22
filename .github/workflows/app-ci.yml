@@ -13,8 +13,8 @@ on:
       - '.github/workflows/app-ci.yml'
 
 jobs:
-  build-and-lint:
-    name: Build & Lint Frontend
+  build-lint-test:
+    name: Build, Lint & Test Frontend
     runs-on: ubuntu-latest
 
     defaults:
@@ -37,6 +37,9 @@ jobs:
 
       - name: Run Linter
         run: npm run lint
+
+      - name: Run Unit Tests
+        run: npm run test
 
       - name: Build Next.js App
         run: npm run build
