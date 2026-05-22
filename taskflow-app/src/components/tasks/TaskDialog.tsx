@@ -7,13 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Task, TaskPriority, TaskStatus } from "@/@types/Task";
 import { ProjectMember } from "@/@types/Project";
+import { validateTaskCreation } from "@/lib/validations/taskValidation";
 
 interface TaskDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   task?: Task | null;
   onSave: (task: Partial<Task>) => Promise<void>;
-  status?: TaskStatus; // Default status for new task
+  status?: TaskStatus;
   members?: ProjectMember[];
 }
 
@@ -140,11 +141,15 @@ export function TaskDialog({ open, onOpenChange, task, onSave, status = TaskStat
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)} disabled={loading}>
-            Cancelar
-          </Button>
-          <Button onClick={handleSave} disabled={loading || !title.trim()}>
-            {loading ? "Salvando..." : "Salvar"}
+          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancelar</Button>
+          <Button 
+            onClick={handleSave} 
+            disabled={
+              loading || 
+              !validateTaskCreation({ title, description, priority, assigneeId: assigneeId || null })
+            }
+          >
+            {loading ? "Salvando..." : "Salvar Tarefa"}
           </Button>
         </DialogFooter>
       </DialogContent>

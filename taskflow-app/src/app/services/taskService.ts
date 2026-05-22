@@ -1,7 +1,8 @@
 "use server";
 
-import { Task, TaskComment, TaskMoveRequest } from "@/@types/Task";
+import { Task, TaskMoveRequest } from "@/@types/Task";
 import { fetchApi } from "@/lib/api";
+import { validateTaskCreation } from "@/lib/validations/taskValidation";
 
 export async function getTasks(projectId: number): Promise<Task[]> {
   try {
@@ -22,11 +23,16 @@ export async function getTasks(projectId: number): Promise<Task[]> {
   }
 }
 
-export async function createTask(projectId: number, task: Partial<Task>): Promise<Task | null> {
+export async function createTask(projectId: number, taskData: Partial<Task>): Promise<Task | null> {
+  if (!validateTaskCreation(taskData)) {
+    console.error("Task validation failed", taskData);
+    return null;
+  }
+
   try {
     const response = await fetchApi(`/api/projects/${projectId}/tasks`, {
       method: "POST",
-      body: JSON.stringify(task),
+      body: JSON.stringify(taskData),
     });
 
     if (!response.ok) return null;

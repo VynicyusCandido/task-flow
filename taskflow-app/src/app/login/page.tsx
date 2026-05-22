@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { LayoutDashboard, Lock, Mail } from "lucide-react";
+import { Lock, Mail } from "lucide-react";
 import { authenticateServerAction } from "@/app/services/auth";
 
 export default function LoginPage() {
@@ -14,7 +14,6 @@ export default function LoginPage() {
   const handleLogin = async (formData: FormData) => {
     setLoading(true);
     await authenticateServerAction(formData);
-    // Em caso de erro na server action, o loading acaba. Se sucesso, o server faz o redirect.
     setLoading(false);
   };
 
