@@ -70,3 +70,15 @@ export async function getProjectMembers(projectId: number): Promise<ProjectMembe
     return [];
   }
 }
+
+export async function deleteProject(id: number): Promise<boolean> {
+  try {
+    const response = await fetchApi(`/api/projects/${id}`, {
+      method: "DELETE",
+    });
+    return response.ok;
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    return false;
+  }
+}

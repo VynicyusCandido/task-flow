@@ -2,15 +2,16 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, RefreshCcw } from "lucide-react";
+import { LogOut, Plus, RefreshCcw, Trash2, LayoutDashboard } from "lucide-react";
 import { logoutServerAction } from "@/app/services/auth";
-import { getMyProjects, createProject, getProjectMembers } from "@/app/services/projectService";
+import { getMyProjects, createProject, getProjectMembers, deleteProject } from "@/app/services/projectService";
 import { getTasks, createTask, updateTask } from "@/app/services/taskService";
 import { Project, ProjectMember } from "@/@types/Project";
 import { Task } from "@/@types/Task";
 import { Board } from "@/components/kanban/Board";
 import { TaskDialog } from "@/components/tasks/TaskDialog";
 import { ProjectDialog } from "@/components/projects/ProjectDialog";
+import { DeleteProjectDialog } from "@/components/projects/DeleteProjectDialog";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { toast } from "react-toastify";
 
@@ -26,19 +27,20 @@ export default function DashboardPage() {
   
   const [isProjectDialogOpen, setIsProjectDialogOpen] = useState(false);
 
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
+
   const loadData = useCallback(async () => {
     try {
       setLoading(true);
       const userProjects = await getMyProjects();
       setProjects(userProjects);
       
-      if (userProjects.length > 0) {
-        const selectedProject = userProjects[0];
-        setCurrentProject(selectedProject);
-        
+      if (currentProject) {
+        // Reload current project tasks and members
         const [projectTasks, members] = await Promise.all([
-          getTasks(selectedProject.id),
-          getProjectMembers(selectedProject.id)
+          getTasks(currentProject.id),
+          getProjectMembers(currentProject.id)
         ]);
         
         setTasks(projectTasks);
@@ -112,6 +114,54 @@ export default function DashboardPage() {
     }
   };
 
+  const handleDeleteClick = (e: React.MouseEvent, project: Project) => {
+    e.stopPropagation();
+    setProjectToDelete(project);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const confirmDeleteProject = async (projectId: number) => {
+    try {
+      const success = await deleteProject(projectId);
+      if (success) {
+        setProjects(projects.filter(p => p.id !== projectId));
+        if (currentProject?.id === projectId) {
+          setCurrentProject(null);
+          setTasks([]);
+        }
+        toast.success("Projeto apagado com sucesso!");
+      } else {
+        toast.error("Erro ao apagar projeto");
+      }
+    } catch (error) {
+      console.error("Failed to delete project", error);
+      toast.error("Erro ao apagar projeto");
+    }
+  };
+
+  const handleReturnToDashboard = () => {
+    setCurrentProject(null);
+    setTasks([]);
+  };
+
+  const handleSelectProjectFromGrid = async (project: Project) => {
+    setCurrentProject(project);
+    setLoading(true);
+    try {
+      const [newTasks, members] = await Promise.all([
+        getTasks(project.id),
+        getProjectMembers(project.id)
+      ]);
+      setTasks(newTasks);
+      setProjectMembers(members);
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao carregar dados do projeto");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="h-screen flex flex-col bg-background transition-colors duration-300">
       <header className="h-16 border-b border-border flex items-center justify-between px-6 shrink-0 bg-card shadow-sm z-10 transition-colors duration-300">
@@ -119,8 +169,11 @@ export default function DashboardPage() {
           <h1 className="font-bold text-xl text-primary flex items-center gap-2">
             📋 TaskFlow
           </h1>
-          {projects.length > 0 && (
+          {projects.length > 0 && currentProject && (
             <div className="flex items-center gap-2 border-l border-border pl-6">
+              <Button variant="ghost" size="icon" onClick={handleReturnToDashboard} title="Retornar ao Dashboard" className="mr-2">
+                <LayoutDashboard className="w-4 h-4 text-muted-foreground" />
+              </Button>
               <span className="text-sm text-muted-foreground">Projeto Atual:</span>
               <select 
                 className="text-sm font-semibold bg-transparent text-foreground border-none focus:ring-0 cursor-pointer"
@@ -172,6 +225,40 @@ export default function DashboardPage() {
             <p className="text-muted-foreground mb-6">Crie um projeto para começar a organizar suas tarefas.</p>
             <Button onClick={() => setIsProjectDialogOpen(true)}>Criar Novo Projeto</Button>
           </div>
+        ) : !currentProject ? (
+          <div className="flex-1 flex flex-col gap-6">
+            <div className="flex justify-between items-center">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground">Meus Projetos</h2>
+                <p className="text-sm text-muted-foreground">Selecione um projeto para gerenciar suas tarefas</p>
+              </div>
+              <Button onClick={() => setIsProjectDialogOpen(true)} className="gap-2 shadow-sm shadow-primary/20 hover:shadow-md transition-shadow">
+                <Plus className="w-4 h-4" />
+                Novo Projeto
+              </Button>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {projects.map(project => (
+                <div 
+                  key={project.id} 
+                  className="bg-card border border-border rounded-xl p-6 cursor-pointer hover:border-primary transition-colors shadow-sm hover:shadow-md relative group"
+                  onClick={() => handleSelectProjectFromGrid(project)}
+                >
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+                    onClick={(e) => handleDeleteClick(e, project)}
+                    title="Apagar Projeto"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                  <h3 className="font-bold text-lg mb-2 pr-8">{project.name}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-2">{project.description || "Sem descrição"}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         ) : (
           <>
             <div className="flex justify-between items-center">
@@ -208,6 +295,13 @@ export default function DashboardPage() {
         open={isProjectDialogOpen}
         onOpenChange={setIsProjectDialogOpen}
         onSave={handleSaveProject}
+      />
+
+      <DeleteProjectDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+        project={projectToDelete}
+        onConfirm={confirmDeleteProject}
       />
 
       <ThemeToggle />
