@@ -85,6 +85,10 @@ export async function deleteProject(id: number): Promise<boolean> {
 
 export async function inviteMember(projectId: number, email: string): Promise<ProjectMember | null> {
   try {
+    if (!email || !email.trim()) {
+      throw new Error("E-mail é obrigatório");
+    }
+
     const response = await fetchApi(`/api/projects/${projectId}/members`, {
       method: "POST",
       body: JSON.stringify({ email }),

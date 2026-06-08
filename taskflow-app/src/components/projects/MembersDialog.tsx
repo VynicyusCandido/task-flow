@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ProjectMember } from "@/@types/Project";
-import { User, Mail, UserMinus, Shield, ShieldCheck } from "lucide-react";
+import { User, Mail, UserMinus, ShieldCheck } from "lucide-react";
 import { inviteMember, removeMember } from "@/app/services/projectService";
 import { toast } from "react-toastify";
 
@@ -34,8 +34,9 @@ export function MembersDialog({ open, onOpenChange, projectId, members, onMember
         setEmail("");
         toast.success("Usuário convidado com sucesso!");
       }
-    } catch (error: any) {
-      toast.error(error.message || "Erro ao convidar usuário");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Erro ao convidar usuário";
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -48,7 +49,7 @@ export function MembersDialog({ open, onOpenChange, projectId, members, onMember
         onMembersChange(members.filter(m => m.userId !== userId));
         toast.success("Membro removido do projeto");
       }
-    } catch (error) {
+    } catch {
       toast.error("Erro ao remover membro");
     }
   };
