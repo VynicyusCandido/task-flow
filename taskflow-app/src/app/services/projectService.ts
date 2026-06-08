@@ -82,3 +82,34 @@ export async function deleteProject(id: number): Promise<boolean> {
     return false;
   }
 }
+
+export async function inviteMember(projectId: number, email: string): Promise<ProjectMember | null> {
+  try {
+    const response = await fetchApi(`/api/projects/${projectId}/members`, {
+      method: "POST",
+      body: JSON.stringify({ email }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.message || "Falha ao convidar membro");
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error("Error inviting member:", error);
+    throw error;
+  }
+}
+
+export async function removeMember(projectId: number, userId: number): Promise<boolean> {
+  try {
+    const response = await fetchApi(`/api/projects/${projectId}/members/${userId}`, {
+      method: "DELETE",
+    });
+    return response.ok;
+  } catch (error) {
+    console.error("Error removing member:", error);
+    return false;
+  }
+}
