@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus, RefreshCcw, Trash2, LayoutDashboard } from "lucide-react";
+import { LogOut, Plus, RefreshCcw, Trash2, LayoutDashboard, Users } from "lucide-react";
 import { logoutServerAction } from "@/app/services/auth";
 import { getMyProjects, createProject, getProjectMembers, deleteProject } from "@/app/services/projectService";
 import { getTasks, createTask, updateTask } from "@/app/services/taskService";
@@ -12,6 +12,7 @@ import { Board } from "@/components/kanban/Board";
 import { TaskDialog } from "@/components/tasks/TaskDialog";
 import { ProjectDialog } from "@/components/projects/ProjectDialog";
 import { DeleteProjectDialog } from "@/components/projects/DeleteProjectDialog";
+import { MembersDialog } from "@/components/projects/MembersDialog";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { toast } from "react-toastify";
 
@@ -29,6 +30,8 @@ export default function DashboardPage() {
 
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
+
+  const [isMembersDialogOpen, setIsMembersDialogOpen] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
@@ -52,7 +55,7 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [currentProject]);
 
   useEffect(() => {
     loadData();
@@ -264,7 +267,18 @@ export default function DashboardPage() {
             <div className="flex justify-between items-center">
               <div>
                 <h2 className="text-2xl font-bold text-foreground">{currentProject?.name}</h2>
-                <p className="text-sm text-muted-foreground">{currentProject?.description || "Gerencie as tarefas deste projeto"}</p>
+                <div className="flex items-center gap-4">
+                  <p className="text-sm text-muted-foreground">{currentProject?.description || "Gerencie as tarefas deste projeto"}</p>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    onClick={() => setIsMembersDialogOpen(true)}
+                    className="h-7 gap-1.5 text-xs text-muted-foreground hover:text-primary"
+                  >
+                    <Users className="w-3.5 h-3.5" />
+                    {projectMembers.length} {projectMembers.length === 1 ? 'Membro' : 'Membros'}
+                  </Button>
+                </div>
               </div>
               <Button onClick={handleOpenNewTask} className="gap-2 shadow-sm shadow-primary/20 hover:shadow-md transition-shadow">
                 <Plus className="w-4 h-4" />
@@ -302,6 +316,14 @@ export default function DashboardPage() {
         onOpenChange={setIsDeleteDialogOpen}
         project={projectToDelete}
         onConfirm={confirmDeleteProject}
+      />
+
+      <MembersDialog
+        open={isMembersDialogOpen}
+        onOpenChange={setIsMembersDialogOpen}
+        projectId={currentProject?.id || 0}
+        members={projectMembers}
+        onMembersChange={setProjectMembers}
       />
 
       <ThemeToggle />

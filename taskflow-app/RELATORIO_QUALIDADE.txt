@@ -1,0 +1,112 @@
+# RELATÓRIO DE ANÁLISE DE QUALIDADE DE CÓDIGO - ESLINT
+
+## Disciplina: Qualidade de Software
+## Aluno: Gemini CLI (Interactive Agent)
+## Data: 03/06/2026
+
+---
+
+## 1. Parte 1 – Desenvolvimento da Aplicação
+
+A aplicação analisada chama-se **TaskFlow**, um sistema de gerenciamento de tarefas e projetos inspirado em metodologias ágeis (Kanban).
+
+**Características da Aplicação:**
+- **Tecnologia:** Next.js 16 (App Router), TypeScript, Tailwind CSS, Radix UI.
+- **Complexidade:** Alta, envolvendo autenticação, gerenciamento de estado com Zustand, persistência via API, e interface interativa com Drag and Drop (@hello-pangea/dnd).
+- **Estrutura:** Possui mais de 20 arquivos fonte e aproximadamente 3000+ linhas de código.
+- **Funcionalidades:** Cadastro de usuários, login, criação de projetos, gerenciamento de tarefas (CRUD), atribuição de membros e alteração de status via Kanban.
+
+---
+
+## 2. Parte 2 – Estudo da Ferramenta
+
+### 2.1. O que é o ESLint
+O ESLint é uma ferramenta de linting de código aberto para JavaScript e TypeScript. Criada por Nicholas C. Zakas em 2013, seu objetivo é permitir que desenvolvedores descubram problemas em seu código sem precisar executá-lo. O ESLint é altamente plugável e configurável, permitindo que cada projeto defina seu próprio conjunto de regras de estilo e boas práticas.
+
+### 2.2. O que é Análise Estática
+A análise estática é o processo de avaliar o código-fonte de um software sem executá-lo. Diferente dos testes (unitários, integração, E2E), que verificam o comportamento do software em execução, a análise estática foca na estrutura e sintaxe.
+- **Vantagens:** Detecta erros precocemente (early detection), garante consistência de estilo, identifica códigos mortos ou inacessíveis e previne vulnerabilidades comuns.
+- **Limitações:** Não substitui testes funcionais, pode gerar falsos positivos e não consegue prever erros de lógica complexos que dependem do estado de execução.
+
+### 2.3. Aplicações do ESLint
+O ESLint auxilia em diversas frentes:
+- **Padronização:** Garante que todos os membros da equipe sigam as mesmas regras (ex: uso de aspas simples vs duplas).
+- **Identificação de Erros:** Detecta variáveis não utilizadas, loops infinitos simples e problemas de escopo.
+- **Manutenção:** Facilita a leitura do código ao forçar uma estrutura limpa.
+- **Integração Contínua (CI):** Pode ser configurado para impedir que códigos que não passem no linting sejam integrados ao repositório principal.
+
+---
+
+## 3. Parte 3 – Instalação e Configuração
+
+### 3.1. Instalação
+A instalação no projeto TaskFlow foi realizada via npm:
+```bash
+npm install eslint eslint-config-next --save-dev
+```
+
+### 3.2. Configuração
+O projeto utiliza o novo formato de configuração do ESLint (`eslint.config.mjs`). A configuração integra as regras recomendadas do Next.js e do TypeScript:
+
+```javascript
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
+
+const eslintConfig = defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+  ]),
+]);
+
+export default eslintConfig;
+```
+
+---
+
+## 4. Parte 4 – Execução e Resultados
+
+### 4.1. Primeira Execução
+Ao executar o comando `npm run lint`, foi identificado o seguinte problema:
+
+**Saída do Terminal:**
+```
+C:\Users\vynic\ProjectCode\taskflow\taskflow-app\src\app\dashboard\page.tsx
+  55:6  warning  React Hook useCallback has a missing dependency: 'currentProject'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+✖ 1 problem (0 errors, 1 warning)
+```
+
+**Análise do Problema:**
+O hook `useCallback` na função `loadData` estava utilizando a variável `currentProject`, porém esta não estava listada no array de dependências. Isso poderia causar bugs onde a função `loadData` manteria uma referência obsoleta (stale) do projeto atual.
+
+### 4.2. Correção Aplicada
+O código foi corrigido adicionando `currentProject` ao array de dependências do `useCallback`:
+
+```typescript
+// Antes
+const loadData = useCallback(async () => { ... }, []);
+
+// Depois
+const loadData = useCallback(async () => { ... }, [currentProject]);
+```
+
+### 4.3. Verificação Final
+Após a correção, o ESLint foi executado novamente:
+
+**Saída do Terminal:**
+```
+> taskflow-app@0.1.0 lint
+> eslint
+(Nenhum erro ou aviso encontrado)
+```
+
+---
+
+## 5. Conclusão
+A utilização do ESLint no projeto TaskFlow permitiu identificar um erro potencial de gerenciamento de estado no React que poderia ser difícil de depurar em produção. A ferramenta provou ser essencial para manter a integridade e a qualidade do código-fonte, garantindo que boas práticas sejam seguidas de forma automatizada.
