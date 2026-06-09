@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { Auth } from "@/app/enums";
 import { redirect } from "next/navigation";
 
+
 export async function authenticateServerAction(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -43,12 +44,12 @@ export async function authenticateServerAction(formData: FormData) {
       maxAge: 60 * 60 * 24,
     });
 
+    return { success: true };
+
   } catch (error) {
     console.error("Login failed:", error);
     return { error: "Erro interno no servidor de autenticação" };
   }
-
-  redirect("/dashboard");
 }
 
 export async function logoutServerAction() {

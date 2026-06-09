@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,11 +11,19 @@ import { authenticateServerAction } from "@/app/services/auth";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleLogin = async (formData: FormData) => {
     setLoading(true);
-    await authenticateServerAction(formData);
-    setLoading(false);
+    setError(null);
+    const result = await authenticateServerAction(formData);
+    if (result?.error) {
+      setError(result.error);
+      setLoading(false);
+    } else {
+      router.push("/dashboard");
+    }
   };
 
   return (
@@ -66,7 +75,10 @@ export default function LoginPage() {
               </div>
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col gap-3">
+            {error && (
+              <p className="text-sm text-destructive text-center w-full">{error}</p>
+            )}
             <Button className="w-full" type="submit" disabled={loading}>
               {loading ? "Entrando..." : "Acessar Workspace"}
             </Button>
