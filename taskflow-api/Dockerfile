@@ -1,6 +1,6 @@
 # --- Estágio 1: Build ---
 # Usa uma imagem com Maven e JDK para compilar o código
-FROM maven:3.9.9-eclipse-temurin-17-alpine AS build
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS build
 WORKDIR /app
 
 # Copia o arquivo de configuração do Maven e baixa as dependências
@@ -15,7 +15,7 @@ RUN mvn clean package -DskipTests
 
 # --- Estágio 2: Runtime ---
 # Usa uma imagem menor e mais segura apenas com o JRE para rodar a aplicação
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 # Copia o arquivo .jar gerado no estágio de build
