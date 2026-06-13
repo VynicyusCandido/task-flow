@@ -1,10 +1,14 @@
 import Introspect from "@/@types/Introspect";
-import { jwtDecode } from "jwt-decode";
 
 export default async function Token(token: string): Promise<Introspect> {
   try {
-    const decoded = jwtDecode(token);
-    const isExpired = decoded.exp ? decoded.exp * 1000 < Date.now() : true;
+    // Decodificação manual do JWT para ser 100% seguro no Edge Runtime
+    const parts = token.split('.');
+    if (parts.length !== 3) return { active: false };
+
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+    
+    const isExpired = payload.exp ? payload.exp * 1000 < Date.now() : true;
 
     if (isExpired) {
       return { active: false };
@@ -12,11 +16,12 @@ export default async function Token(token: string): Promise<Introspect> {
 
     return {
       active: true,
-      sub: decoded.sub,
-      exp: decoded.exp,
-      iat: decoded.iat,
+      sub: payload.sub,
+      exp: payload.exp,
+      iat: payload.iat,
     };
-  } catch {
+  } catch (error) {
+    console.error("Token validation error:", error);
     return { active: false };
   }
 }
