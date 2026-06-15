@@ -1,7 +1,11 @@
 import { cookies } from "next/headers";
 import { Auth } from "@/app/enums";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+
+if (!API_BASE_URL) {
+  throw new Error("NEXT_PUBLIC_API_URL is not defined");
+}
 
 export async function fetchApi(endpoint: string, options: RequestInit = {}) {
   const cookieStore = await cookies();

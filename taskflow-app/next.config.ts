@@ -1,7 +1,8 @@
-const isDevelopment = process.env.NEXT_PUBLIC_APP_ENV !== 'production';
+const isDevelopment = process.env.NODE_ENV !== 'production';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 const getAllowedOriginsByEnvironment = () => {
-  return isDevelopment ? 'http://localhost:3000' : 'https://taskflow.app';
+  return isDevelopment ? 'http://localhost:3000' : 'https://taskflow-app-lovat-eta.vercel.app';
 };
 
 const securityHeaders = [
@@ -35,7 +36,7 @@ const securityHeaders = [
               style-src 'self' 'unsafe-inline';
               img-src 'self' data: blob:;
               font-src 'self' data:;
-              connect-src 'self' http://localhost:8080;
+              connect-src 'self' ${apiUrl};
               frame-src 'none';
               object-src 'none';
               base-uri 'self';
@@ -70,14 +71,6 @@ const nextConfig: NextConfig = {
   async headers() {
     return isDevelopment ? [] : securityHeaders;
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: 'http://localhost:8080/api/:path*'
-      }
-    ];
-  }
 };
 
 export default nextConfig;
