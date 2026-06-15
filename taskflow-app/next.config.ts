@@ -1,4 +1,4 @@
-const isDevelopment = process.env.NEXT_PUBLIC_APP_ENV !== 'production';
+const isDevelopment = process.env.NODE_ENV !== 'production';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 const getAllowedOriginsByEnvironment = () => {
