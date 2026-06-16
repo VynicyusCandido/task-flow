@@ -32,6 +32,7 @@ public class ProjectService {
         return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    @Transactional(readOnly = true)
     public List<ProjectDTO> getCurrentUserProjects() {
         User currentUser = getCurrentUser();
         List<ProjectMember> memberships = projectMemberRepository.findByUserId(currentUser.getId());
