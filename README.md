@@ -1,6 +1,6 @@
 # TaskFlow 📋
 
-Uma aplicação de lista de tarefas (to-do list) simples, moderna e eficiente, desenvolvida para demonstrar a integração entre **Next.js (React)** no frontend e **Spring Boot** no backend com **Java 21+**, banco de dados **PostgreSQL** e todo o ambiente containerizado com **Docker**. O projeto também inclui pipelines de CI/CD com **GitHub Actions**.
+Uma aplicação de lista de tarefas (to-do list) simples, moderna e eficiente, desenvolvida para demonstrar a integração entre **Next.js (React)** no frontend e **Spring Boot** no backend com **Java 21+**, banco de dados **PostgreSQL** hospedado no **Supabase** e todo o ambiente containerizado com **Docker**. O projeto também inclui pipelines de CI/CD com **GitHub Actions**.
 
 ## 📌 Problema que resolve
 
@@ -110,6 +110,7 @@ taskflow/
 
 **Infraestrutura e DevOps**
 * Docker e Docker Compose para containerização
+* Supabase para hospedagem do banco de dados PostgreSQL em nuvem
 * GitHub Actions para CI/CD (integração contínua e deploy automatizado)
 * Repositório único, mas com frontend e backend em diretórios separados
 
@@ -121,7 +122,6 @@ Para rodar o projeto localmente, você precisará ter instalado:
 Ou, se preferir executar manualmente:
 * **Java 21+** e **Maven** (para o backend)
 * **Node.js 18+** e **npm/yarn** (para o frontend)
-* **PostgreSQL** (pode ser via Docker)
 
 ## 🚀 Como executar
 
@@ -136,29 +136,26 @@ docker-compose up --build
 A aplicação estará disponível em:
 * **Frontend:** http://localhost:3000
 * **Backend API:** http://localhost:8080/api
-* **Banco de dados PostgreSQL:** `localhost:5432` (usuário `admin`, senha `admin123`, database `todo_db`)
+
+> O banco de dados é hospedado no **Supabase**. A conexão já está configurada no `application.properties` do backend.
 
 ---
 
 ### Manualmente (Sem Docker Compose)
 
-**1. Suba o banco de dados (opcional, via Docker)**
+**1. Rodando o Backend**
 
 ```bash
-docker run --name taskflow-postgres -e POSTGRES_DB=todo_db -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin123 -p 5432:5432 -d postgres:15
-```
-
-**2. Rodando o Backend**
-
-```bash
-cd backend
+cd taskflow-api
 ./mvnw spring-boot:run
 ```
 
-**3. Rodando o Frontend**
+> O backend conecta automaticamente ao banco Supabase configurado em `src/main/resources/application.properties`.
+
+**2. Rodando o Frontend**
 
 ```bash
-cd frontend
+cd taskflow-app
 npm install
 npm run dev
 ```
