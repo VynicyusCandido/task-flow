@@ -2,7 +2,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production';
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 const getAllowedOriginsByEnvironment = () => {
-  return isDevelopment ? 'http://localhost:3000' : 'https://taskflow-app-lovat-eta.vercel.app';
+  return process.env.NEXT_PUBLIC_VERCEL_URL 
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` 
+    : (isDevelopment ? 'http://localhost:3000' : 'https://taskflow-app-lovat-eta.vercel.app');
 };
 
 const securityHeaders = [
