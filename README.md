@@ -1,19 +1,22 @@
 # TaskFlow 📋
 
-Uma aplicação de lista de tarefas (to-do list) simples, moderna e eficiente, desenvolvida para demonstrar a integração entre **Next.js (React)** no frontend e **Spring Boot** no backend com **Java 21+**, banco de dados **PostgreSQL** e todo o ambiente containerizado com **Docker**. O projeto também inclui pipelines de CI/CD com **GitHub Actions**.
+Uma aplicação de gerenciamento de projetos e tarefas no estilo Kanban, desenvolvida para demonstrar a integração entre **Next.js (React)** no frontend e **Spring Boot** no backend com **Java 21+**, banco de dados **PostgreSQL** hospedado no **Supabase** e todo o ambiente containerizado com **Docker**. O projeto inclui autenticação JWT, controle de membros por projeto e pipelines de CI/CD com **GitHub Actions**.
 
 ## 📌 Problema que resolve
 
-No dia a dia, precisamos de uma ferramenta rápida e intuitiva para organizar nossas tarefas. O TaskFlow resolve exatamente isso: permite criar, editar, marcar como concluída e excluir tarefas de forma simples, com uma interface limpa e responsiva. É a solução ideal para quem quer manter o foco e a produtividade.
+No dia a dia, equipes precisam de uma ferramenta clara para organizar projetos e distribuir tarefas. O TaskFlow resolve exatamente isso: permite criar projetos, convidar membros, gerenciar tarefas com prioridade e data de entrega e acompanhar o progresso de cada item em um quadro Kanban visual com suporte a Drag and Drop.
 
 ### ✨ Funcionalidades
 
-* ✅ Criar novas tarefas
-* 📝 Editar tarefas existentes (com duplo clique no texto)
-* ✔️ Marcar/desmarcar tarefas como concluídas
-* 🗑️ Excluir tarefas
-* 📱 Design responsivo (funciona em desktop e mobile)
-* 🎨 Interface moderna com Tailwind CSS e componentes shadcn/ui
+* 🔐 Cadastro e login com autenticação JWT (token em HttpOnly Cookie)
+* 📁 Criar, editar e excluir projetos
+* 👥 Convidar membros para projetos com controle de papéis (Proprietário / Membro)
+* ✅ CRUD completo de tarefas (título, descrição, prioridade, data de entrega, responsável)
+* 💬 Comentários em tarefas
+* 🗂️ Quadro Kanban com colunas A Fazer, Em Andamento e Concluído
+* 🖱️ Drag and Drop para mover e reordenar tarefas
+* 🌗 Alternância de tema claro e escuro
+* 🎨 Interface moderna com Tailwind CSS e shadcn/ui
 
 ### ⚗️ C4 Model
 
@@ -27,12 +30,12 @@ No dia a dia, precisamos de uma ferramenta rápida e intuitiva para organizar no
 ### 1. Gestão de Usuários e Autenticação
 * **RF01 - Cadastro de Usuário:** O sistema deve permitir que novos usuários se cadastrem informando nome, e-mail e senha.
 * **RF02 - Login e Logout:** O sistema deve permitir login seguro com e-mail e senha, além de encerramento da sessão ativa.
-* **RF03 - Proteção de Perfil:** O usuário autenticado deve poder visualizar ou editar os dados básicos do seu perfil.
+* **RF03 - Perfil:** O usuário autenticado deve poder visualizar os dados básicos do seu perfil (nome, e-mail e avatar).
 
 ### 2. Gestão de Projetos (Workspaces)
 * **RF04 - Criar Projeto:** Usuários logados devem ser capazes de criar novos projetos/boards do zero.
 * **RF05 - Editar/Excluir Projeto:** O administrador do projeto deve poder editar seus detalhes (título, descrição) ou excluí-lo por completo.
-* **RF06 - Convites e Equipe:** O criador do projeto deve ser capaz de convidar outros usuários cadastrados no sistema para acessarem o Board (via busca de e-mail ou gerando um link de acesso).
+* **RF06 - Convites e Equipe:** O criador do projeto deve ser capaz de convidar outros usuários cadastrados no sistema para acessarem o Board via busca por e-mail.
 * **RF07 - Controle de Papéis:** O projeto deve distinguir propriedades, como `Proprietário` (Pode excluir/adicionar pessoas) e `Membro` (Pode apenas gerenciar tarefas).
 
 ### 3. Gestão de Tarefas
@@ -62,8 +65,9 @@ No dia a dia, precisamos de uma ferramenta rápida e intuitiva para organizar no
 
 ### 3. Usabilidade e Desempenho (UX/UI)
 * **RNF07 - Biblioteca de Drag & Drop:** Para manter a leveza no frontend React, sugere-se a adoção de bibliotecas modernas para manuseio do Kanban, como `@hello-pangea/dnd` ou `dnd-kit`.
-* **RNF08 - Foco Web/Desktop:** Por ser um projeto de viés acadêmico, o Kanban e suas interações (Drag & Drop) serão projetados e testados visando uso primário via navegadores Desktop com mouse. Não haverá exigência de criação de componentes responsivos ou adaptados para telas móveis.
-* **RNF09 - Optimistic UI (Tempo de Resposta Perceptível):** Ao mover um card via UI no Kanban, a requisição de atualização para o backend deverá correr de forma secundária; o Frontend aplicará a mudança visual imediatamente para provar sensação instantânea de performance para o usuário. 
+* **RNF08 - Foco Web/Desktop:** O Kanban e suas interações (Drag & Drop) são projetados e testados visando uso primário via navegadores Desktop com mouse. Não há exigência de componentes responsivos ou adaptados para telas móveis.
+* **RNF09 - Optimistic UI (Tempo de Resposta Perceptível):** Ao mover um card via UI no Kanban, a requisição de atualização para o backend ocorre em segundo plano; o Frontend aplica a mudança visual imediatamente para transmitir sensação instantânea de performance.
+* **RNF10 - Tema Claro e Escuro:** A interface deve suportar alternância entre tema claro e escuro via componente ThemeToggle.
 
 
 ## 📁 Estrutura do projeto
@@ -88,7 +92,8 @@ taskflow/
 ├── docker-compose.yml     # Orquestração dos serviços
 ├── .github/
 │   └── workflows/
-│       └── ci.yml         # Pipeline CI/CD
+│       ├── api-ci.yml     # Pipeline CI/CD do backend
+│       └── app-ci.yml     # Pipeline CI/CD do frontend
 └── README.md
 ```
 
@@ -110,6 +115,7 @@ taskflow/
 
 **Infraestrutura e DevOps**
 * Docker e Docker Compose para containerização
+* Supabase para hospedagem do banco de dados PostgreSQL em nuvem
 * GitHub Actions para CI/CD (integração contínua e deploy automatizado)
 * Repositório único, mas com frontend e backend em diretórios separados
 
@@ -121,7 +127,6 @@ Para rodar o projeto localmente, você precisará ter instalado:
 Ou, se preferir executar manualmente:
 * **Java 21+** e **Maven** (para o backend)
 * **Node.js 18+** e **npm/yarn** (para o frontend)
-* **PostgreSQL** (pode ser via Docker)
 
 ## 🚀 Como executar
 
@@ -136,29 +141,26 @@ docker-compose up --build
 A aplicação estará disponível em:
 * **Frontend:** http://localhost:3000
 * **Backend API:** http://localhost:8080/api
-* **Banco de dados PostgreSQL:** `localhost:5432` (usuário `admin`, senha `admin123`, database `todo_db`)
+
+> O banco de dados é hospedado no **Supabase**. A conexão já está configurada no `application.properties` do backend.
 
 ---
 
 ### Manualmente (Sem Docker Compose)
 
-**1. Suba o banco de dados (opcional, via Docker)**
+**1. Rodando o Backend**
 
 ```bash
-docker run --name taskflow-postgres -e POSTGRES_DB=todo_db -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin123 -p 5432:5432 -d postgres:15
-```
-
-**2. Rodando o Backend**
-
-```bash
-cd backend
+cd taskflow-api
 ./mvnw spring-boot:run
 ```
 
-**3. Rodando o Frontend**
+> O backend conecta automaticamente ao banco Supabase configurado em `src/main/resources/application.properties`.
+
+**2. Rodando o Frontend**
 
 ```bash
-cd frontend
+cd taskflow-app
 npm install
 npm run dev
 ```

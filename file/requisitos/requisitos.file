@@ -2,19 +2,46 @@
 
 -Requisitos Funcionais-
 
-    RF01: Criar uma nova tarefa.
-    RF02: Listar todas as tarefas.
-    RF03: Marcar/desmarcar tarefa como concluída.
-    RF04: Editar o título de uma tarefa.
-    RF05: Excluir uma tarefa.
-    RF06: Persistir os dados em banco de dados PostgreSQL.
-    RF07: Disponibilizar API RESTful (GET, POST, PUT, DELETE).
-    RF08: Interface web responsiva.
+    [Autenticação e Usuários]
+    RF01: Permitir que novos usuários se cadastrem informando nome, e-mail e senha.
+    RF02: Autenticar usuários via e-mail e senha com token JWT; encerrar sessão via exclusão do cookie HttpOnly.
+    RF03: Exibir os dados do perfil do usuário autenticado (nome, e-mail e avatar dinâmico).
+
+    [Projetos]
+    RF04: Criar novos projetos.
+    RF05: Editar detalhes (título, descrição) e excluir projetos existentes.
+    RF06: Convidar membros para o projeto via busca por e-mail.
+    RF07: Distinguir papéis no projeto: Proprietário (OWNER) pode gerenciar membros; Membro (MEMBER) pode gerenciar tarefas.
+
+    [Tarefas]
+    RF08: Criar, visualizar, editar e excluir tarefas dentro de um projeto (CRUD completo).
+    RF09: Uma tarefa deve conter: título, descrição, prioridade (Alta/Média/Baixa), data de entrega e responsável (Assignee).
+    RF10: Atribuir uma tarefa a um membro do projeto.
+    RF11: Adicionar e listar comentários em uma tarefa.
+
+    [Kanban]
+    RF12: Exibir as tarefas do projeto em colunas de status: A Fazer (TODO), Em Andamento (IN_PROGRESS) e Concluído (DONE).
+    RF13: Mover tarefas entre colunas e reordenar dentro da mesma coluna via Drag and Drop.
 
 -Requisitos Não Funcionais-
 
-    RNF01: Backend em Java 21+ com Spring Boot, frontend em Next.js com Tailwind e shadcn/ui.
-    RNF02: Banco de dados PostgreSQL.
-    RNF03: Containerização com Docker e Docker Compose.
-    RNF04: CI/CD com GitHub Actions (build e testes automatizados).
-    RNF05: Código modular e testado (testes unitários no backend e frontend).
+    [Arquitetura e Tecnologias]
+    RNF01: Frontend em Next.js com Tailwind CSS e shadcn/ui.
+    RNF02: Backend em Java 21+ com Spring Boot.
+    RNF03: Banco de dados relacional PostgreSQL.
+
+    [Segurança]
+    RNF04: Autenticação stateless com JWT; token armazenado em HttpOnly Cookie.
+    RNF05: Senhas armazenadas com hash Bcrypt (sem texto puro).
+    RNF06: Usuário só acessa projetos e tarefas dos quais é membro.
+
+    [UX/UI e Performance]
+    RNF07: Drag and Drop implementado com @hello-pangea/dnd.
+    RNF08: Interface projetada e testada para uso primário em navegadores Desktop.
+    RNF09: Optimistic UI no Kanban: atualização visual imediata ao mover cards, requisição ao backend em segundo plano.
+    RNF10: Suporte a tema claro e escuro (ThemeToggle).
+
+    [Infraestrutura e DevOps]
+    RNF11: Containerização com Docker e Docker Compose.
+    RNF12: CI/CD com GitHub Actions (pipelines separados para API e App).
+    RNF13: Testes unitários no backend (JUnit 5 + Mockito) e no frontend (Jest + Testing Library).
