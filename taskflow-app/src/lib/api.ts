@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { Auth } from "@/app/enums";
+import { logger } from "@/lib/logger";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,7 +16,6 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     "Content-Type": "application/json",
   };
 
-  // Se options.headers for um objeto (Record<string, string>), fazemos o merge
   if (options.headers && !Array.isArray(options.headers) && !(options.headers instanceof Headers)) {
     Object.assign(headers, options.headers);
   }
@@ -28,6 +28,15 @@ export async function fetchApi(endpoint: string, options: RequestInit = {}) {
     ...options,
     headers,
   });
+
+  if (!response.ok) {
+    logger.error("API request failed", {
+      endpoint,
+      method: options.method ?? "GET",
+      status: response.status,
+      correlationId: response.headers.get("X-Correlation-ID") ?? undefined,
+    });
+  }
 
   return response;
 }
