@@ -48,4 +48,17 @@ class CorrelationIdFilterTest {
 
         assertThat(MDC.get("correlationId")).isNull();
     }
+
+    @Test
+    void whenHeaderContainsControlChar_generatesNewUUID() throws Exception {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        request.addHeader("X-Correlation-ID", "injected\nfake-log-line");
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        FilterChain chain = mock(FilterChain.class);
+
+        filter.doFilterInternal(request, response, chain);
+
+        String correlationId = response.getHeader("X-Correlation-ID");
+        assertThat(correlationId).isNotNull().matches("[0-9a-f\\-]{36}");
+    }
 }

@@ -22,7 +22,7 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
         String id = request.getHeader(HEADER);
-        if (id == null || id.isBlank()) {
+        if (id == null || id.isBlank() || id.length() > 128 || id.chars().anyMatch(c -> c < 32)) {
             id = UUID.randomUUID().toString();
         }
         MDC.put(MDC_KEY, id);
