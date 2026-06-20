@@ -11,6 +11,8 @@ import com.example.taskflow.repository.ProjectRepository;
 import com.example.taskflow.repository.TaskCommentRepository;
 import com.example.taskflow.repository.TaskRepository;
 import com.example.taskflow.repository.UserRepository;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -58,6 +60,10 @@ class TaskServiceTest {
         private UserRepository userRepository;
         @Mock
         private TaskCommentRepository taskCommentRepository;
+        @Mock
+        private MeterRegistry meterRegistry;
+        @Mock
+        private Counter tasksCreatedCounter;
         @Mock
         private SecurityContext securityContext;
         @Mock
@@ -111,6 +117,8 @@ class TaskServiceTest {
                                 .project(project)
                                 .assignee(assigneeUser)
                                 .build();
+
+                when(meterRegistry.counter("taskflow.tasks.created")).thenReturn(tasksCreatedCounter);
 
                 // Default: current user is found by email
                 when(userRepository.findByEmail("user@example.com"))
@@ -268,6 +276,30 @@ class TaskServiceTest {
                         assertThatRuntimeException()
                                         .isThrownBy(() -> taskService.createTask(project.getId(), dto))
                                         .withMessageContaining("Assignee not found");
+                }
+
+                @Test
+                @DisplayName("Incrementa counter taskflow.tasks.created ao criar tarefa")
+                void validPayload_incrementsCreatedCounter() {
+                        TaskDTO dto = TaskDTO.builder()
+                                        .title("Counted task")
+                                        .description("desc")
+                                        .status(TaskStatus.TODO)
+                                        .build();
+
+                        when(projectRepository.findById(project.getId())).thenReturn(Optional.of(project));
+
+                        Task savedTask = Task.builder()
+                                        .id(300L).title(dto.getTitle()).description(dto.getDescription())
+                                        .status(TaskStatus.TODO).priority(TaskPriority.MEDIUM)
+                                        .orderIndex(0).createdAt(LocalDateTime.now())
+                                        .project(project).assignee(null).build();
+
+                        when(taskRepository.save(any(Task.class))).thenReturn(savedTask);
+
+                        taskService.createTask(project.getId(), dto);
+
+                        verify(tasksCreatedCounter).increment();
                 }
 
                 @Test

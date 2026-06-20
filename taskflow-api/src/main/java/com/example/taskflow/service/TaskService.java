@@ -12,7 +12,9 @@ import com.example.taskflow.repository.ProjectRepository;
 import com.example.taskflow.repository.TaskCommentRepository;
 import com.example.taskflow.repository.TaskRepository;
 import com.example.taskflow.repository.UserRepository;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TaskService {
@@ -30,6 +33,7 @@ public class TaskService {
     private final ProjectMemberRepository projectMemberRepository;
     private final UserRepository userRepository;
     private final TaskCommentRepository taskCommentRepository;
+    private final MeterRegistry meterRegistry;
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -38,7 +42,10 @@ public class TaskService {
 
     private void ensureMemberAccess(Long projectId, Long userId) {
         projectMemberRepository.findByProjectIdAndUserId(projectId, userId)
-                .orElseThrow(() -> new AccessDeniedException("You do not have access to this project"));
+                .orElseThrow(() -> {
+                    log.warn("Access denied: userId={}, projectId={}", userId, projectId);
+                    return new AccessDeniedException("You do not have access to this project");
+                });
     }
 
     public List<TaskDTO> getTasksByProject(Long projectId) {
@@ -75,7 +82,10 @@ public class TaskService {
             task.setAssignee(assignee);
         }
         
-        return mapToDto(taskRepository.save(task));
+        Task saved = taskRepository.save(task);
+        meterRegistry.counter("taskflow.tasks.created").increment();
+        log.info("Task created: id={}, project={}, assignee={}", saved.getId(), projectId, dto.getAssigneeId());
+        return mapToDto(saved);
     }
 
     @Transactional
@@ -105,6 +115,7 @@ public class TaskService {
             task.setAssignee(null);
         }
         
+        log.info("Task updated: id={}, project={}", taskId, projectId);
         return mapToDto(taskRepository.save(task));
     }
 
@@ -140,9 +151,10 @@ public class TaskService {
             throw new RuntimeException("Task does not belong to this project");
         }
         
+        log.info("Task deleted: id={}, project={}", taskId, projectId);
         taskRepository.delete(task);
     }
-    
+
     // Comments
 
     public List<TaskCommentDTO> getTaskComments(Long projectId, Long taskId) {
