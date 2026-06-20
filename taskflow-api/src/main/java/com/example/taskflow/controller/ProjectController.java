@@ -4,6 +4,7 @@ import com.example.taskflow.dtos.project.InviteRequest;
 import com.example.taskflow.dtos.project.ProjectDTO;
 import com.example.taskflow.dtos.project.ProjectMemberDTO;
 import com.example.taskflow.service.ProjectService;
+import io.micrometer.core.annotation.Timed;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Timed(value = "taskflow.projects.controller", description = "Project controller execution time")
 @RestController
 @RequestMapping("/api/projects")
 @RequiredArgsConstructor
