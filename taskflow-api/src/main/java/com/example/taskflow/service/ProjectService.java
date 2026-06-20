@@ -10,7 +10,9 @@ import com.example.taskflow.model.enums.ProjectRole;
 import com.example.taskflow.repository.ProjectMemberRepository;
 import com.example.taskflow.repository.ProjectRepository;
 import com.example.taskflow.repository.UserRepository;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
@@ -26,6 +29,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final UserRepository userRepository;
+    private final MeterRegistry meterRegistry;
 
     private User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -61,7 +65,8 @@ public class ProjectService {
                 .build();
         
         projectMemberRepository.save(member);
-        
+        meterRegistry.counter("taskflow.projects.created").increment();
+        log.info("Project created: id={}, owner={}", project.getId(), currentUser.getId());
         return mapToDto(project);
     }
     
@@ -129,6 +134,7 @@ public class ProjectService {
                 .role(ProjectRole.MEMBER)
                 .build();
                 
+        log.info("Member invited: project={}, email={}", projectId, request.getEmail());
         return mapMemberToDto(projectMemberRepository.save(member));
     }
     
@@ -158,6 +164,7 @@ public class ProjectService {
                 .orElseThrow(() -> new AccessDeniedException("You do not have access to this project"));
                 
         if (member.getRole() != ProjectRole.OWNER) {
+            log.warn("Owner access required: userId={}, projectId={}", userId, projectId);
             throw new AccessDeniedException("Only project owners can perform this action");
         }
     }
